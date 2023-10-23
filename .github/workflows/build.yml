@@ -1,0 +1,32 @@
+---
+
+name: Build an publish on quay.io
+
+on:
+  push:
+    branches: [main]
+    paths: ["Dockerfile"]
+
+jobs:
+  build-and-publish-on-quay-io:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+      - name: Build images
+        id: build-images
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: yarr
+          tags: "latest ${{ github.sha }}"
+          archs: amd64, arm64
+          containerfiles: |
+            ./Dockerfile
+      - name: Push To quay.io
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ steps.build-images.outputs.image }}
+          tags: ${{ steps.build-images.outputs.tags }}
+          registry: quay.io/eriol
+          username: ${{ secrets.REGISTRY_USER }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
