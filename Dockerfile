@@ -10,4 +10,5 @@ RUN cd yarr && go build -tags "sqlite_foreign_keys linux" -ldflags="-s -w -X 'ma
 FROM alpine:3.18
 LABEL LastUpdate="2023-10-23"
 COPY --from=builder /app/yarr/yarr /bin/yarr
+RUN apk -U --no-cache upgrade
 ENTRYPOINT ["/bin/yarr", "-addr", "0.0.0.0:7070", "-db", "/data/yarr.db"]
