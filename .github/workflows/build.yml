@@ -6,6 +6,8 @@ on:
   push:
     branches: [main]
     paths: ["Dockerfile"]
+    tags:
+      - '*'
 
 jobs:
   build-and-publish-on-quay-io:
