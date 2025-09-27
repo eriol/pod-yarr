@@ -4,8 +4,6 @@ name: Build an publish on quay.io
 
 on:
   push:
-    branches: [main]
-    paths: ["Dockerfile"]
     tags:
       - '*'
 
