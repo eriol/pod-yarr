@@ -4,7 +4,7 @@ WORKDIR /app
 ENV CGO_ENABLED=1
 
 RUN apk -U --no-cache add build-base git
-RUN git clone https://github.com/nkanaev/yarr
+RUN git clone --depth 1 --branch v2.5 https://github.com/nkanaev/yarr
 RUN cd yarr && go build -tags "sqlite_foreign_keys linux" -ldflags="-s -w -X 'main.Version=2.5'" ./cmd/yarr
 
 FROM alpine:latest
